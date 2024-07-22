@@ -1,5 +1,6 @@
 #include <cmath>
-using std::isfinite;
+#include <limits>
+using std::numeric_limits;
 
 #include <vector>
 using std::vector;
@@ -78,7 +79,7 @@ void MULTIPLY_Node::input_fired(int32_t time, double incoming_output) {
     }
 
 #ifdef NAN_CHECKS
-    if (!isfinite(output_values[time])) {
+    if (isnan(output_values[time]) || isinf(output_values[time])) {
         Log::fatal(
             "ERROR: output_value[%d] becaome %lf on RNN node: %d\n", time, output_values[time], innovation_number
         );
@@ -105,8 +106,10 @@ void MULTIPLY_Node::try_update_deltas(int32_t time) {
         num *= d_input[time];
 
         // most likely gradient got huge, so clip it
-        if (!isfinite(num)) {
-            num = copysign(1, num) * 1000;
+        if (num == NAN || num == -numeric_limits<double>::infinity()) {
+            num = -1000.0;
+        } else if (num == NAN || num == numeric_limits<double>::infinity()) {
+            num = 1000.0;
         }
     }
 }

@@ -13,10 +13,6 @@ using std::string;
 #include <vector>
 using std::vector;
 
-#include <iostream>
-using std::cout;
-using std::endl;
-
 #include "common/arguments.hxx"
 #include "common/log.hxx"
 #include "gradient_test.hxx"
@@ -82,7 +78,7 @@ int main(int argc, char** argv) {
         vector<string> inputs2{"input 1", "input 2"};
         vector<string> outputs2{"output 1", "output 2"};
 
-        // Test 2 inputs, 2 outputs, no hidden
+        // //Test 2 inputs, 2 outputs, no hidden
         genome = create_sin(inputs2, 0, 0, outputs2, max_recurrent_depth, weight_rules);
 
         inputs.resize(2);
